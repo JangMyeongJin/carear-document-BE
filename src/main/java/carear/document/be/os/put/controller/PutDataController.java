@@ -18,11 +18,7 @@ public class PutDataController {
 
 	@GetMapping("/{type}")
     public ResponseEntity<?> putProject(@RequestBody ProjectRequestDto requestDto) {
-        SearchFormDto searchFormDto = new SearchFormDto();
-
-        searchFormDto.setQuery(SearchFormUtil.getSearchQuery(requestDto));
-        searchFormDto.setIndexes(requestDto.getIndex().split(StringUtil.COMMA));
         
-        return ResponseEntity.ok(searchServiceFactory.getSearchService("query").msearch(searchFormDto, requestDto));
+        return null;
     }
 }

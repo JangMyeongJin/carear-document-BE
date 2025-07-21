@@ -19,7 +19,6 @@ import carear.document.be.os.search.dto.SearchRequestDto;
 import carear.document.be.os.search.dto.SearchResponseDto;
 import carear.document.be.util.StringUtil;
 import lombok.RequiredArgsConstructor;
-import net.clush.search.opensearch.OpenSearch;
 
 
 @Service
