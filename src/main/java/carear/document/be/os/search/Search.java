@@ -14,6 +14,8 @@ import org.opensearch.client.opensearch.core.MsearchResponse;
 import org.opensearch.client.opensearch.core.SearchRequest;
 import org.opensearch.client.opensearch.core.msearch.MultisearchBody;
 import org.opensearch.client.opensearch.core.msearch.RequestItem;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import carear.document.be.os.Properties;
 import carear.document.be.os.search.builder.Builder;
@@ -22,14 +24,16 @@ import carear.document.be.util.StringUtil;
 import jakarta.json.stream.JsonGenerator;
 
 
+@Component
 public class Search {
-	private final OpenSearchClient openSearchClient;
+	private static Properties PROPERTIES = new Properties();
 	
+	private OpenSearchClient openSearchClient;
+	
+	@Autowired
 	public Search(OpenSearchClient openSearchClient) {
         this.openSearchClient = openSearchClient;
     }
-	
-	private Properties properties = new Properties();
 	
 	public MsearchResponse<Map> msearch(SearchFormDto searchFormDto) {
 		String[] indexes = searchFormDto.getIndexes();
@@ -97,7 +101,7 @@ public class Search {
 			BoolQuery.Builder boolQueryBuilder = new BoolQuery.Builder();
 
 			// Properties searchfield 가져오기
-			List<String> propertiesSearchField = properties.getSearchField(indexName);
+			List<String> propertiesSearchField = PROPERTIES.getSearchField(indexName);
 
 			// 검색어
 			if(QUERY.equals("")) {

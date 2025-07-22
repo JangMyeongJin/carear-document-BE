@@ -33,7 +33,7 @@ private String SEARCHTYPE = "query";
 
 	private final Search SEARCH;
 
-	private final Properties PROPERTIES;
+	private static Properties PROPERTIES = new Properties();
 
     public ApiResponseDto msearch(SearchFormDto searchFormDto, SearchRequestDto requestDto) {
         SearchResponseDto responseDto = new SearchResponseDto();
