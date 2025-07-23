@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import carear.document.be.dto.ApiResponseDto;
@@ -16,6 +17,8 @@ import carear.document.be.os.data.dto.DataRequestDto;
 public class PutDataService {
 
     private static Properties PROPERTIES = new Properties();
+
+    @Autowired
     private Data DATA;
 
     public ApiResponseDto putData(DataRequestDto requestDto, String indexName) {
@@ -31,9 +34,14 @@ public class PutDataService {
             }
         }
 
-        String result = DATA.put(indexName, documentMap);
+        String result = DATA.put(documentMap, indexName);
         
-        return ApiResponseDto.success(result);
+        if (!result.equals("")) {
+            return ApiResponseDto.success(result);
+        }else{
+            return ApiResponseDto.fail("fail");
+        }
+
     }
 
     /**
@@ -48,6 +56,7 @@ public class PutDataService {
                     Field field = currentClass.getDeclaredField(fieldName);
                     field.setAccessible(true);
                     return field.get(requestDto);
+
                 } catch (NoSuchFieldException e) {
                     // 현재 클래스에 필드가 없으면 부모 클래스 확인
                     currentClass = currentClass.getSuperclass();
@@ -55,7 +64,9 @@ public class PutDataService {
             }
         } catch (Exception e) {
             // 필드 접근 실패 시 null 반환
+            e.printStackTrace();
+            return "";
         }
-        return null;
+        return "";
     }
 }
