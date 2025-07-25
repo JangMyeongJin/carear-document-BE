@@ -12,6 +12,7 @@ import carear.document.be.dto.ApiResponseDto;
 import carear.document.be.os.Properties;
 import carear.document.be.os.data.Data;
 import carear.document.be.os.data.dto.DataRequestDto;
+import carear.document.be.os.data.dto.DataResponseDto;
 
 @Service
 public class PutDataService {
@@ -34,10 +35,15 @@ public class PutDataService {
             }
         }
 
-        String result = DATA.put(documentMap, indexName);
+        String resultId = DATA.put(documentMap, indexName);
+
+        DataResponseDto dataResponseDto = new DataResponseDto();
+        dataResponseDto.setId(resultId);
+        dataResponseDto.setIndexName(indexName);
+        dataResponseDto.setType("put");
         
-        if (!result.equals("")) {
-            return ApiResponseDto.success(result);
+        if (!resultId.equals("")) {
+            return ApiResponseDto.success(dataResponseDto);
         }else{
             return ApiResponseDto.fail("fail");
         }

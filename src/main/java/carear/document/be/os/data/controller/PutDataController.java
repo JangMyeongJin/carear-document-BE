@@ -28,19 +28,13 @@ public class PutDataController {
 	@PostMapping("/{indexName}")
     public ResponseEntity<?> putData(@RequestBody Map<String, Object> requestMap, @PathVariable String indexName) {
         
-        try {
-            // 팩토리를 사용하여 type에 따라 적절한 DTO 생성
-            DataRequestDto requestDto = PutRequestDtoFactory.createDto(indexName, requestMap);
+        // 팩토리를 사용하여 type에 따라 적절한 DTO 생성
+        DataRequestDto requestDto = PutRequestDtoFactory.createDto(indexName, requestMap);
 
-            ApiResponseDto responseDto = putDataService.putData(requestDto, indexName);
-            
-            log.info("[putData] data success : " + responseDto);
-            
-            // 여기서 requestDto를 사용하여 비즈니스 로직 처리
-            return ResponseEntity.ok(responseDto);
-            
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error processing request: " + e.getMessage());
-        }
+        ApiResponseDto responseDto = putDataService.putData(requestDto, indexName);
+
+        log.info("[putData] data success : " + responseDto);
+
+        return ResponseEntity.ok(responseDto);
     }
 }

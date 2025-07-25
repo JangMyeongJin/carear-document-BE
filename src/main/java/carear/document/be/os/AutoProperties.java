@@ -11,9 +11,9 @@ import carear.document.be.util.StringUtil;
 
 
 @Component
-public class Properties {
+public class AutoProperties {
 	private String[] INDEXES = {
-		"project"
+		"auto_search"
 	};
 
     /*
@@ -22,36 +22,30 @@ public class Properties {
 	 *  '/' nested 구분
 	 */
 	private String[] SEARCHFIELD = {
-		"title,title.ngram,title.exact,body,body.ngram,body.exact,stack"
-	};
-
-    private String[] KEYWORDSEARCHFIELD = {
-		"title,body"
+		"word,word.ngram,word.keyword,word.exact,initial"
 	};
 
     private String[] HIGHLIGHTFIELD = {
-		"title,title.ngram,title.exact,body,body.ngram,body.exact,stack"
+		"word,word.ngram,word.keyword,word.exact,initial"
 	};
 
     private String[] DEFAULTSEARCHFIELD = {
-		"title,body"
+		"word,initial"
 	};
 
 	private String[] DEFAULTFIELD = {
-		"id,title,body,startDate,endDate,roll,stack",
+		"id,word,initial",
 	};
 
     private Map<String, List<String>> INDEX_SEARCHFIELD = new HashMap<>();
 	private Map<String, List<String>> INDEX_HIGHLIGHTFIELD = new HashMap<>();
-	private Map<String, List<String>> INDEX_KEYWORDSEARCHFIELD = new HashMap<>();
 	private Map<String, List<String>> INDEX_DEFAULTSEARCHFIELD = new HashMap<>();
 	private Map<String, List<String>> INDEX_DEFAULTFIELD = new HashMap<>();
 
-    public Properties() {
+    public AutoProperties() {
 		for(int i = 0; i < INDEXES.length; i++) {
 			INDEX_SEARCHFIELD.put(INDEXES[i], Arrays.asList(SEARCHFIELD[i].split(StringUtil.COMMA)));
 			INDEX_HIGHLIGHTFIELD.put(INDEXES[i], Arrays.asList(HIGHLIGHTFIELD[i].split(StringUtil.COMMA)));
-			INDEX_KEYWORDSEARCHFIELD.put(INDEXES[i], Arrays.asList(KEYWORDSEARCHFIELD[i].split(StringUtil.COMMA)));
 			INDEX_DEFAULTSEARCHFIELD.put(INDEXES[i], Arrays.asList(DEFAULTSEARCHFIELD[i].split(StringUtil.COMMA)));
 			INDEX_DEFAULTFIELD.put(INDEXES[i], Arrays.asList(DEFAULTFIELD[i].split(StringUtil.COMMA)));
 		}
@@ -63,10 +57,6 @@ public class Properties {
 
 	public List<String> getHighlightField(String index) {
 		return INDEX_HIGHLIGHTFIELD.get(index);
-	}
-
-	public List<String> getKeywordSearchField(String index) {
-		return INDEX_KEYWORDSEARCHFIELD.get(index);
 	}
 
 	public List<String> getDefaultSearchField(String index) {

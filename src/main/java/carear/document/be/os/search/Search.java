@@ -12,6 +12,7 @@ import org.opensearch.client.opensearch._types.query_dsl.Query;
 import org.opensearch.client.opensearch.core.MsearchRequest;
 import org.opensearch.client.opensearch.core.MsearchResponse;
 import org.opensearch.client.opensearch.core.SearchRequest;
+import org.opensearch.client.opensearch.core.SearchResponse;
 import org.opensearch.client.opensearch.core.msearch.MultisearchBody;
 import org.opensearch.client.opensearch.core.msearch.RequestItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,32 @@ import jakarta.json.stream.JsonGenerator;
 public class Search {
 	private static Properties PROPERTIES = new Properties();
 	
-	private OpenSearchClient openSearchClient;
+	private OpenSearchClient OPENSEARCHCLIENT;
 	
 	@Autowired
 	public Search(OpenSearchClient openSearchClient) {
-        this.openSearchClient = openSearchClient;
+        this.OPENSEARCHCLIENT = openSearchClient;
     }
+
+	public SearchResponse<Map> search(SearchFormDto searchFormDto) {
+		
+		String index = searchFormDto.getIndex();
+		
+		if(!index.equals("") && index != null) {
+			SearchRequest searchRequest = searchRequest(searchFormDto, index);
+			
+			try {
+				SearchResponse<Map> searchResponse = OPENSEARCHCLIENT.search(searchRequest, Map.class);
+			
+				return searchResponse;
+			}catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		return null;
+	}
 	
 	public MsearchResponse<Map> msearch(SearchFormDto searchFormDto) {
 		String[] indexes = searchFormDto.getIndexes();
@@ -60,7 +81,7 @@ public class Search {
 					msearchBuilder.searches(item);
 				}
 
-				MsearchResponse<Map> msearchResponse = openSearchClient.msearch(msearchBuilder.build(),Map.class);
+				MsearchResponse<Map> msearchResponse = OPENSEARCHCLIENT.msearch(msearchBuilder.build(),Map.class);
 
 				return msearchResponse;
 					
@@ -78,6 +99,7 @@ public class Search {
 	}
 	 
 	 public SearchRequest searchRequest(SearchFormDto searchFormDTO, String indexName) {
+		System.out.println(searchFormDTO);
 
 			// 검색 조건
 			String QUERY = searchFormDTO.getQuery();
@@ -90,6 +112,7 @@ public class Search {
 			Map<String,List<String>> DATEFIELD = searchFormDTO.getDateField();
 			Map<String,List<String>> INCLUDEWORD = searchFormDTO.getIncludeWord();
 			Map<String,List<String>> EXCLUDEWORD = searchFormDTO.getExcludeWord();
+			Map<String,List<String>> AGGRFIELD = searchFormDTO.getAggrField();
 			int SIZE = searchFormDTO.getSize();
 			int page = searchFormDTO.getPage() == 0 ? 1 : searchFormDTO.getPage();
 			int FROM = (page - 1) * SIZE;
@@ -197,6 +220,13 @@ public class Search {
 					Builder.getHighlightBuilder(searchRequestBuilder, highlightField);
 				}
 			}
+
+			if(AGGRFIELD.containsKey(indexName)) {
+				List<String> aggrField = AGGRFIELD.get(indexName);
+				if(aggrField.size() > 0) {
+					Builder.getTermsAggregationBuilder(searchRequestBuilder, aggrField);
+				}
+			}
 			
 			searchRequestBuilder.from(FROM);
 			searchRequestBuilder.size(SIZE);
@@ -211,17 +241,22 @@ public class Search {
 	        return searchRequest;
 	    }
 
-	    /*
-	     *  SearchRequest를 String으로 변환
-	     */
-	    private StringWriter searchRequestWriter(SearchRequest searchRequest) {
-			JacksonJsonpMapper mapper = new JacksonJsonpMapper();
-			StringWriter writer = new StringWriter();
-			JsonGenerator generator = mapper.jsonProvider().createGenerator(writer);
+	        /*
+     *  SearchRequest를 String으로 변환
+     */
+    private String searchRequestWriter(SearchRequest searchRequest) {
+		JacksonJsonpMapper mapper = new JacksonJsonpMapper();
+		StringWriter writer = new StringWriter();
+		JsonGenerator generator = mapper.jsonProvider().createGenerator(writer);
+		try {
 			searchRequest.serialize(generator, mapper);
+			generator.flush();
+			return writer.toString();
+		} catch (Exception e) {
+			throw new RuntimeException("SearchRequest 직렬화 실패", e);
+		} finally {
 			generator.close();
-			
-			return writer;
 		}
+	}
 
 }

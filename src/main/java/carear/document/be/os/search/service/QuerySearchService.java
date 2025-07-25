@@ -23,9 +23,9 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class QuerySearchService {
+public class QuerySearchService extends SearchService {
 
-private String SEARCHTYPE = "query";
+	private String SEARCHTYPE = "query";
 	
 	public String getSearchType() {
 		return SEARCHTYPE;
@@ -110,9 +110,13 @@ private String SEARCHTYPE = "query";
 				.build();
 			pagingDto.setPaging(totalCount);
 			
-			responseDto.setPage(pagingDto);
+		responseDto.setPage(pagingDto);
 		responseDto.setRequest(requestDto);
 		
 		return ApiResponseDto.success(responseDto);
     }
+
+	public ApiResponseDto search(SearchFormDto searchFormDto, SearchRequestDto requestDto) {
+		return ApiResponseDto.success(null);
+	}
 }

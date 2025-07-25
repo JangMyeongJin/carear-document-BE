@@ -21,9 +21,10 @@ public class SearchFormDto {
 	private Map<String,List<String>> shouldFilterField = new HashMap<>();
 	private Map<String,List<String>> filterField = new HashMap<>();
 	private Map<String,List<String>> nestedField = new HashMap<>();
-	private Map<String,List<String>> dateField = new HashMap<>();
+	private Map<String,List<String>> dateField = new HashMap<>();			// dateField / date / operator
 	private Map<String,List<String>> includeWord = new HashMap<>();
 	private Map<String,List<String>> excludeWord = new HashMap<>();
+	private Map<String,List<String>> aggrField = new HashMap<>();			// aggrName / aggrField / size
 	private int page;
 	private int size;
 }

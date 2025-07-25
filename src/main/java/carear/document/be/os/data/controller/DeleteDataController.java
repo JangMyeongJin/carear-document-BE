@@ -26,19 +26,12 @@ public class DeleteDataController {
 	@PostMapping("/{indexName}")
     public ResponseEntity<?> deleteData(@RequestBody DataRequestDto requestDto, @PathVariable String indexName) {
         
-        try {
-            
-            String id = requestDto.getId();
+        String id = requestDto.getId();
 
-            ApiResponseDto responseDto = deleteDataService.deleteData(id, indexName);
+        ApiResponseDto responseDto = deleteDataService.deleteData(id, indexName);
 
-            log.info("[deleteData] data success : " + responseDto);
-            
-            // 여기서 requestDto를 사용하여 비즈니스 로직 처리
-            return ResponseEntity.ok(responseDto);
-            
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error processing request: " + e.getMessage());
-        }
+        log.info("[deleteData] data success : " + responseDto);
+
+        return ResponseEntity.ok(responseDto);
     }
 }
