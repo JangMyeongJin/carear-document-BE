@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import carear.document.be.dto.ApiResponseDto;
 import carear.document.be.os.data.Data;
+import carear.document.be.os.data.dto.DataResponseDto;
 
 @Service
 public class DeleteDataService {
@@ -15,10 +16,15 @@ public class DeleteDataService {
 
     public ApiResponseDto deleteData(String id, String indexName) {
 
-        String result = DATA.delete(id, indexName);
+        String resultId = DATA.delete(id, indexName);
+
+        DataResponseDto dataResponseDto = new DataResponseDto();
+        dataResponseDto.setId(resultId);
+        dataResponseDto.setIndexName(indexName);
+        dataResponseDto.setType("delete");
         
-        if (!result.equals("")) {
-            return ApiResponseDto.success(result);
+        if (!resultId.equals("")) {
+            return ApiResponseDto.success(dataResponseDto);
         }else{
             return ApiResponseDto.fail("fail");
         }

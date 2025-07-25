@@ -9,4 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DataResponseDto {
 	private String id;
+	private String indexName;
+	private String type;
 }

@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class Data {
 
-    private OpenSearchClient openSearchClient;
+    private OpenSearchClient OPENSEARCHCLIENT;
 	
 	@Autowired
 	public Data(OpenSearchClient openSearchClient) {
-        this.openSearchClient = openSearchClient;
+        this.OPENSEARCHCLIENT = openSearchClient;
     }
 
     /**
@@ -37,7 +37,7 @@ public class Data {
                 .document(documentMap)
                 .build();
 
-            IndexResponse response = openSearchClient.index(indexRequest);
+            IndexResponse response = OPENSEARCHCLIENT.index(indexRequest);
 
             if (response.result().name().equals("Created") || response.result().name().equals("Updated")) {
                 return id;
@@ -65,7 +65,7 @@ public class Data {
                 .index(indexName)
                 .build();
 
-            DeleteResponse response = openSearchClient.delete(deleteRequest);
+            DeleteResponse response = OPENSEARCHCLIENT.delete(deleteRequest);
 
             if (response.result().name().equals("Deleted")) {
                 return id;

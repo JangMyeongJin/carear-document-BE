@@ -18,18 +18,13 @@ public class SearchFormUtil {
 		if(query.equals("")) {
 			searchCondition = "partialMatch";
 		}
-	
-		switch (searchCondition) {
-			case "startWith":
-				query = query + "*";
-				break;
-			case "endWith":
-				query = "*" + query;
-				break;
-			case "partialMatch":
-			default:
-				break;
+
+		if(searchCondition.equals("startWith")) {
+			query = query + "*";
+		}else if(searchCondition.equals("endWith")) {
+			query = "*" + query;
 		}
+
 		return query;
 	}
 
