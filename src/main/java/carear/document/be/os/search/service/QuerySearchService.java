@@ -117,6 +117,53 @@ public class QuerySearchService extends SearchService {
     }
 
 	public ApiResponseDto search(SearchFormDto searchFormDto, SearchRequestDto requestDto) {
-		return ApiResponseDto.success(null);
+		SearchResponseDto responseDto = new SearchResponseDto();
+		
+		int totalCount = 0;
+		
+		SearchResponse<Map> searchResponse = SEARCH.search(searchFormDto);
+
+		responseDto.setResult(
+			searchResponse.hits().hits().stream()
+				.map(hit -> {
+					Map<String, Object> result = new HashMap<>();
+					if (hit.source() != null) {
+						result.putAll(hit.source());
+					}
+						// 하이라이트 ngram, 기본필드, exact 순으로 추출
+					if (hit.highlight() != null) {
+						List<String> defaultFields = PROPERTIES.getDefaultField(hit.index());
+						Map<String, List<String>> highlight = hit.highlight();
+						Map<String, List<String>> mergedHighlight = new HashMap<>();
+							for(String field : defaultFields) {
+							if(field.contains(StringUtil.SLASH)) {
+								field = field.replace(StringUtil.SLASH, ".");
+							}
+							if(highlight.containsKey(field + ".ngram")) {
+								mergedHighlight.put(field, highlight.get(field + ".ngram"));
+							} else if(highlight.containsKey(field)) {
+								mergedHighlight.put(field, highlight.get(field));
+							} else if(highlight.containsKey(field + ".exact")) {
+								mergedHighlight.put(field, highlight.get(field + ".exact"));
+							}
+						}
+						result.put("highlight", mergedHighlight);
+					}
+					return result;
+				})
+				.collect(Collectors.toList())
+		);
+		totalCount = Long.valueOf(searchResponse.hits().total().value()).intValue();
+		
+		PagingDto pagingDto = PagingDto.builder()
+				.page(searchFormDto.getPage())
+				.pageSize(searchFormDto.getSize())
+				.build();
+		pagingDto.setPaging(totalCount);
+			
+		responseDto.setPage(pagingDto);
+		responseDto.setRequest(requestDto);
+		
+		return ApiResponseDto.success(responseDto);
 	}
 }

@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +25,7 @@ public class PutDataController {
     @Autowired
     private PutDataService putDataService;
 
-	@PostMapping("/{indexName}")
+	@PutMapping("/{indexName}")
     public ResponseEntity<?> putData(@RequestBody Map<String, Object> requestMap, @PathVariable String indexName) {
         
         // 팩토리를 사용하여 type에 따라 적절한 DTO 생성
