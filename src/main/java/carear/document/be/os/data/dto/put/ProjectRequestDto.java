@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectRequestDto extends DataRequestDto {
-	private String roll;
+	private String role;
 	private String stack;
 	private String title;
 	private String body;
 	private String startDate;
 	private String endDate;
+	private String features;
 }
