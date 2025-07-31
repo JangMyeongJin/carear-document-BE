@@ -28,10 +28,13 @@ public class PutDataService {
         List<String> defaultFields = PROPERTIES.getDefaultField(indexName);
 
         Map<String, Object> documentMap = new HashMap<>();
-        
-        // ID 생성 및 추가
-        String generatedId = UUID.randomUUID().toString();
-        documentMap.put("id", generatedId);
+
+        String id = requestDto.getId();
+        if(id == null || id.equals("")){
+            // ID 생성 및 추가
+            String generatedId = UUID.randomUUID().toString();
+            documentMap.put("id", generatedId);
+        }
         
         for (String fieldName : defaultFields) {
             Object fieldValue = getFieldValue(requestDto, fieldName);

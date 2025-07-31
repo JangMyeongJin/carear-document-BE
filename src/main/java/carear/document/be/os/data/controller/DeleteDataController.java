@@ -30,7 +30,7 @@ public class DeleteDataController {
 
         ApiResponseDto responseDto = deleteDataService.deleteData(id, indexName);
 
-        log.info("[deleteData] data success : " + responseDto);
+        log.info("[DeleteData] data success : " + responseDto);
 
         return ResponseEntity.ok(responseDto);
     }
