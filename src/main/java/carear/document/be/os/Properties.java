@@ -38,7 +38,7 @@ public class Properties {
 	};
 
 	private String[] DEFAULTFIELD = {
-		"id,title,body,startDate,endDate,roll,stack",
+		"title,body,startDate,endDate,role,features,stack",
 	};
 
     private Map<String, List<String>> INDEX_SEARCHFIELD = new HashMap<>();

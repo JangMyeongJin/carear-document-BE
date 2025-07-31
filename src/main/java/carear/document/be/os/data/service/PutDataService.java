@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,13 @@ public class PutDataService {
         List<String> defaultFields = PROPERTIES.getDefaultField(indexName);
 
         Map<String, Object> documentMap = new HashMap<>();
+
+        String id = requestDto.getId();
+        if(id == null || id.equals("")){
+            // ID 생성 및 추가
+            String generatedId = UUID.randomUUID().toString();
+            documentMap.put("id", generatedId);
+        }
         
         for (String fieldName : defaultFields) {
             Object fieldValue = getFieldValue(requestDto, fieldName);

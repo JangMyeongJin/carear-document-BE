@@ -67,7 +67,7 @@ public class SearchController {
 
 		log.info("[QuerySearch] searchFormDto : " + searchFormDto);
 			
-		return ResponseEntity.ok(searchServiceFactory.getSearchService("query").msearch(searchFormDto, requestDto));
+		return ResponseEntity.ok(searchServiceFactory.getSearchService("query").search(searchFormDto, requestDto));
     }
 
 	@PostMapping("/auto")
