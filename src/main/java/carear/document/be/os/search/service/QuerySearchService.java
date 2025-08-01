@@ -122,7 +122,6 @@ public class QuerySearchService extends SearchService {
 		int totalCount = 0;
 		
 		SearchResponse<Map> searchResponse = SEARCH.search(searchFormDto);
-
 		responseDto.setResult(
 			searchResponse.hits().hits().stream()
 				.map(hit -> {

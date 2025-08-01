@@ -27,13 +27,13 @@ public class PutDataController {
 
 	@PutMapping("/{indexName}")
     public ResponseEntity<?> putData(@RequestBody Map<String, Object> requestMap, @PathVariable String indexName) {
-        
+
         // 팩토리를 사용하여 type에 따라 적절한 DTO 생성
         DataRequestDto requestDto = PutRequestDtoFactory.createDto(indexName, requestMap);
 
-        ApiResponseDto responseDto = putDataService.putData(requestDto, indexName);
+        log.info("[putData] data : " + requestDto);
 
-        log.info("[putData] data success : " + responseDto);
+        ApiResponseDto responseDto = putDataService.putData(requestDto, indexName);
 
         return ResponseEntity.ok(responseDto);
     }
