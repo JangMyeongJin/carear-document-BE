@@ -58,10 +58,6 @@ public class SearchController {
 			searchFormDto.setDateField(Map.of(indexName, List.of("endDate" + StringUtil.SLASH + requestDto.getEndDate() + StringUtil.SLASH + "lte")));
 		}
 
-		if(!requestDto.getAggrField().equals("")) {
-			searchFormDto.setAggrField(Map.of(indexName, List.of("aggrName" + StringUtil.SLASH + requestDto.getAggrField() + StringUtil.SLASH + "10")));
-		}
-
 		searchFormDto.setPage(requestDto.getPage());
 		searchFormDto.setSize(requestDto.getSize());
 
@@ -112,13 +108,17 @@ public class SearchController {
 			if(!requestDto.getEndDate().equals("")) {
 				searchFormDto.setDateField(Map.of(indexName, List.of("endDate" + StringUtil.SLASH + requestDto.getEndDate() + StringUtil.SLASH + "lte")));
 			}
+
+			if(!requestDto.getAggrField().equals("")) {
+				searchFormDto.setAggrField(Map.of(indexName, List.of("aggrName" + StringUtil.SLASH + requestDto.getAggrField() + StringUtil.SLASH + "10")));
+			}
 			
 			searchFormDto.setPage(requestDto.getPage());
 			searchFormDto.setSize(requestDto.getSize());
 
 			log.info("[AggregationSearch] searchFormDto : " + searchFormDto);
 				
-			return ResponseEntity.ok(searchServiceFactory.getSearchService("query").msearch(searchFormDto, requestDto));
+			return ResponseEntity.ok(searchServiceFactory.getSearchService("aggregation").search(searchFormDto, requestDto));
 	    }
 
 }
