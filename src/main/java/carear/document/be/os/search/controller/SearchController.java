@@ -58,6 +58,10 @@ public class SearchController {
 			searchFormDto.setDateField(Map.of(indexName, List.of("endDate" + StringUtil.SLASH + requestDto.getEndDate() + StringUtil.SLASH + "lte")));
 		}
 
+		if(!requestDto.getSort().equals("")) {
+			searchFormDto.setSortField(Map.of(indexName, List.of(requestDto.getSort())));
+		}
+
 		searchFormDto.setPage(requestDto.getPage());
 		searchFormDto.setSize(requestDto.getSize());
 

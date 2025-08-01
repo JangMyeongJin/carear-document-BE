@@ -13,6 +13,7 @@ public class SearchRequestDto {
     private String reSearchQuery = "";
     private String startDate = "";
     private String endDate = "";
+    private String sort = "startDate/desc";
     private String aggrField = "";
     private int page = 1;
     private int size = 10;
