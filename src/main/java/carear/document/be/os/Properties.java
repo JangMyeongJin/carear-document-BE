@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -49,11 +51,11 @@ public class Properties {
 
     public Properties() {
 		for(int i = 0; i < INDEXES.length; i++) {
-			INDEX_SEARCHFIELD.put(INDEXES[i], Arrays.asList(SEARCHFIELD[i].split(StringUtil.COMMA)));
-			INDEX_HIGHLIGHTFIELD.put(INDEXES[i], Arrays.asList(HIGHLIGHTFIELD[i].split(StringUtil.COMMA)));
-			INDEX_KEYWORDSEARCHFIELD.put(INDEXES[i], Arrays.asList(KEYWORDSEARCHFIELD[i].split(StringUtil.COMMA)));
-			INDEX_DEFAULTSEARCHFIELD.put(INDEXES[i], Arrays.asList(DEFAULTSEARCHFIELD[i].split(StringUtil.COMMA)));
-			INDEX_DEFAULTFIELD.put(INDEXES[i], Arrays.asList(DEFAULTFIELD[i].split(StringUtil.COMMA)));
+			INDEX_SEARCHFIELD.put(INDEXES[i], new ArrayList<>(Arrays.asList(SEARCHFIELD[i].split(StringUtil.COMMA))));
+			INDEX_HIGHLIGHTFIELD.put(INDEXES[i], new ArrayList<>(Arrays.asList(HIGHLIGHTFIELD[i].split(StringUtil.COMMA))));
+			INDEX_KEYWORDSEARCHFIELD.put(INDEXES[i], new ArrayList<>(Arrays.asList(KEYWORDSEARCHFIELD[i].split(StringUtil.COMMA))));
+			INDEX_DEFAULTSEARCHFIELD.put(INDEXES[i], new ArrayList<>(Arrays.asList(DEFAULTSEARCHFIELD[i].split(StringUtil.COMMA))));
+			INDEX_DEFAULTFIELD.put(INDEXES[i], new ArrayList<>(Arrays.asList(DEFAULTFIELD[i].split(StringUtil.COMMA))));
 		}
 	}
 

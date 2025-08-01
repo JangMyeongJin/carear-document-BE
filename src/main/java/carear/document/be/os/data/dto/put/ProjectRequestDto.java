@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectRequestDto extends DataRequestDto {
+	private String id;
 	private String role;
 	private String stack;
 	private String title;
