@@ -35,7 +35,6 @@ public class PutDataService {
             String generatedId = UUID.randomUUID().toString();
             documentMap.put("id", generatedId);
         }else {
-            System.out.println("defaultFields : " + defaultFields);
             defaultFields.add("id");
         }
         
