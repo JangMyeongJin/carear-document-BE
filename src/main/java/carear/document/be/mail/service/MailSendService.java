@@ -1,6 +1,8 @@
 package carear.document.be.mail.service;
 
-import carear.document.be.mail.dto.MailDto;
+import carear.document.be.dto.ApiResponseDto;
+import carear.document.be.mail.dto.MailRequestDto;
+import carear.document.be.mail.dto.MailResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +22,7 @@ public class MailSendService {
     private String to;
 
     @Async
-    public boolean sendMail(MailDto mailDto) {
+    public ApiResponseDto sendMail(MailRequestDto mailDto) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(mailDto.getEmail());  // 고정 수신자
@@ -33,12 +35,16 @@ public class MailSendService {
             log.info("메일 전송 시도: {}", message.getSubject());
             mailSender.send(message);
             log.info("메일 전송 성공");
+
+            MailResponseDto mailResponseDto = new MailResponseDto();
+            mailResponseDto.setMessage("메일이 성공적으로 전송되었습니다.");
             
-            return true;
+            return ApiResponseDto.success(mailResponseDto);
             
         } catch (Exception e) {
             log.error("메일 전송 실패: {}", e.getMessage(), e);
-            throw new RuntimeException("메일 전송에 실패했습니다: " + e.getMessage(), e);
+            
+            return ApiResponseDto.fail("메일 전송에 실패했습니다: " + e.getMessage());
         }
     }
 }
