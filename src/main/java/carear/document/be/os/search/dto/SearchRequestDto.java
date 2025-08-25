@@ -16,5 +16,5 @@ public class SearchRequestDto {
     private String sort = "startDate/desc";
     private String aggrField = "";
     private int page = 1;
-    private int size = 10;
+    private int size;
 }
