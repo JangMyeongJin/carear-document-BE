@@ -229,7 +229,10 @@ public class Search {
 			}
 			
 			searchRequestBuilder.from(FROM);
-			searchRequestBuilder.size(SIZE);
+			
+			if(SIZE > 0) {
+				searchRequestBuilder.size(SIZE);
+			}
 
 			searchRequestBuilder.index(indexName);
 			

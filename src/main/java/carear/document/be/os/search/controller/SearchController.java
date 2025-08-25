@@ -114,11 +114,11 @@ public class SearchController {
 			}
 
 			if(!requestDto.getAggrField().equals("")) {
-				searchFormDto.setAggrField(Map.of(indexName, List.of("aggrName" + StringUtil.SLASH + requestDto.getAggrField() + StringUtil.SLASH + "10")));
+				searchFormDto.setAggrField(Map.of(indexName, List.of("aggrName" + StringUtil.SLASH + requestDto.getAggrField() + StringUtil.SLASH + requestDto.getSize() )));
 			}
 			
 			searchFormDto.setPage(requestDto.getPage());
-			searchFormDto.setSize(requestDto.getSize());
+			searchFormDto.setSize(0);
 
 			log.info("[AggregationSearch] searchFormDto : " + searchFormDto);
 				
