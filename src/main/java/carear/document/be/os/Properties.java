@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import org.springframework.stereotype.Component;
 
@@ -14,7 +13,7 @@ import carear.document.be.util.StringUtil;
 
 @Component
 public class Properties {
-	private String[] INDEXES = {
+	private final String[] INDEXES = {
 		"project"
 	};
 
@@ -23,31 +22,31 @@ public class Properties {
 	 *  '.' field 구분
 	 *  '/' nested 구분
 	 */
-	private String[] SEARCHFIELD = {
+	private final String[] SEARCHFIELD = {
 		"title,title.ngram,title.exact,body,body.ngram,body.exact,stack"
 	};
 
-    private String[] KEYWORDSEARCHFIELD = {
+    private final String[] KEYWORDSEARCHFIELD = {
 		"title,body"
 	};
 
-    private String[] HIGHLIGHTFIELD = {
+    private final String[] HIGHLIGHTFIELD = {
 		"title,title.ngram,title.exact,body,body.ngram,body.exact,stack"
 	};
 
-    private String[] DEFAULTSEARCHFIELD = {
+    private final String[] DEFAULTSEARCHFIELD = {
 		"title,body"
 	};
 
-	private String[] DEFAULTFIELD = {
+	private final String[] DEFAULTFIELD = {
 		"title,body,startDate,endDate,role,features,stack",
 	};
 
-    private Map<String, List<String>> INDEX_SEARCHFIELD = new HashMap<>();
-	private Map<String, List<String>> INDEX_HIGHLIGHTFIELD = new HashMap<>();
-	private Map<String, List<String>> INDEX_KEYWORDSEARCHFIELD = new HashMap<>();
-	private Map<String, List<String>> INDEX_DEFAULTSEARCHFIELD = new HashMap<>();
-	private Map<String, List<String>> INDEX_DEFAULTFIELD = new HashMap<>();
+    private final Map<String, List<String>> INDEX_SEARCHFIELD = new HashMap<>();
+	private final Map<String, List<String>> INDEX_HIGHLIGHTFIELD = new HashMap<>();
+	private final Map<String, List<String>> INDEX_KEYWORDSEARCHFIELD = new HashMap<>();
+	private final Map<String, List<String>> INDEX_DEFAULTSEARCHFIELD = new HashMap<>();
+	private final Map<String, List<String>> INDEX_DEFAULTFIELD = new HashMap<>();
 
     public Properties() {
 		for(int i = 0; i < INDEXES.length; i++) {
