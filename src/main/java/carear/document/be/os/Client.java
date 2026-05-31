@@ -51,8 +51,7 @@ public class Client {
                 .build();
 
             // OpenSearchClient 생성 및 반환
-            OpenSearchClient client = new OpenSearchClient(transport);
-            return client;
+            return new OpenSearchClient(transport);
         } catch (Exception e) {
             throw new RuntimeException("OpenSearch 클라이언트 생성 실패: " + e.getMessage(), e);
         }
