@@ -19,4 +19,5 @@ public class ProjectRequestDto extends DataRequestDto {
 	private String startDate;
 	private String endDate;
 	private String features;
+	private String important;
 }

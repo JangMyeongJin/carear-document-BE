@@ -9,6 +9,7 @@ public class SearchRequestDto {
     private String query = "";
     private String searchCondition = "partialMatch";
     private String searchField = "all";
+    private String filter;
     private boolean isReSearch = false;
     private String reSearchQuery = "";
     private String startDate = "";

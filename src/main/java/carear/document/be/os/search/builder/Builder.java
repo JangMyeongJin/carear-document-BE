@@ -118,61 +118,6 @@ public class Builder {
 	}
 
 	/**
-	 *  startWith 검색
-	 * 
-	 * @param boolQueryBuilder
-	 * @param query
-	 * @param searchField
-	 */
-	public static void getPrefixQueryBuilder(BoolQuery.Builder boolQueryBuilder, String query, List<String> searchField) {
-		query = query.replace(StringUtil.WILDCARD, "");
-		
-		for(String field : searchField) {
-			if(field.indexOf(StringUtil.SLASH) > -1) {
-				field = field.replaceAll(StringUtil.SLASH, StringUtil.DOT);
-			}
-
-			PrefixQuery prefixQuery = new PrefixQuery.Builder()
-				.field(field)
-				.value(query)
-				.build();
-
-			Query queryBuilder = new Query.Builder()
-				.prefix(prefixQuery)
-				.build();
-
-			boolQueryBuilder.should(queryBuilder).minimumShouldMatch("1");
-		}
-	}
-
-	/*
-	 * endWith 검색
-	 * 
-	 * @param boolQueryBuilder
-	 * @param query
-	 * @param searchField
-	 */
-	public static void getWildcardQueryBuilder(BoolQuery.Builder boolQueryBuilder, String query, List<String> searchField) {
-		
-		for(String field : searchField) {
-			if(field.indexOf(StringUtil.SLASH) > -1) {
-				field = field.replaceAll(StringUtil.SLASH, StringUtil.DOT);
-			}
-
-			WildcardQuery wildcardQuery = new WildcardQuery.Builder()
-				.field(field)
-				.value(query)
-				.build();
-
-			Query queryBuilder = new Query.Builder()
-				.wildcard(wildcardQuery)
-				.build();
-
-			boolQueryBuilder.should(queryBuilder).minimumShouldMatch("1");
-		}
-	}
-
-	/**
 	 * 모든 필드 검색
 	 * 
 	 * @param boolQueryBuilder

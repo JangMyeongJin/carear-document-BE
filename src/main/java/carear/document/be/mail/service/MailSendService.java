@@ -19,17 +19,22 @@ public class MailSendService {
     private final JavaMailSender mailSender;
 
     @Value("${spring.mail.to}")
-    private String to;
+    private String sendTo;
 
     @Async
     public ApiResponseDto sendMail(MailRequestDto mailDto) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(mailDto.getEmail());  // 고정 수신자
-            message.setSubject("[문의] " + mailDto.getTitle());
+
+            message.setFrom(sendTo);
+            message.setReplyTo(mailDto.getEmail());
+            message.setTo(sendTo);  // 고정 수신자
+            message.setSubject("[문의] MYCareer 메일보내기에서 보낸 메일");
             message.setText(
-                "이름: " + mailDto.getName() + "\n" +
-                "내용: " + mailDto.getContent()
+                    "이름: " + mailDto.getName() + "\n" +
+                    "이메일: " + mailDto.getEmail() + "\n" +
+                    "제목: " + mailDto.getTitle() + "\n" +
+                    "내용: " + mailDto.getContent()
             );
             
             log.info("메일 전송 시도: {}", message.getSubject());

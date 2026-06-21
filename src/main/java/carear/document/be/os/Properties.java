@@ -23,7 +23,7 @@ public class Properties {
 	 *  '/' nested 구분
 	 */
 	private final String[] SEARCHFIELD = {
-		"title,title.ngram,title.exact,body,body.ngram,body.exact,stack"
+			"title,title.exact,body,body.exact,stack,features,features.exact,role"
 	};
 
     private final String[] KEYWORDSEARCHFIELD = {
@@ -31,15 +31,15 @@ public class Properties {
 	};
 
     private final String[] HIGHLIGHTFIELD = {
-		"title,title.ngram,title.exact,body,body.ngram,body.exact,stack"
+		"title,title.exact,body,body.exact,stack,features,features.exact,role"
 	};
 
     private final String[] DEFAULTSEARCHFIELD = {
-		"title,body"
+		"title,body,stack,features,role"
 	};
 
 	private final String[] DEFAULTFIELD = {
-		"title,body,startDate,endDate,role,features,stack",
+		"title,body,startDate,endDate,role,features,stack,important",
 	};
 
     private final Map<String, List<String>> INDEX_SEARCHFIELD = new HashMap<>();

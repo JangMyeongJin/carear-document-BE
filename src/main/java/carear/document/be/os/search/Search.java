@@ -123,52 +123,19 @@ public class Search {
 			BoolQuery.Builder includeBuilder = new BoolQuery.Builder();
 			BoolQuery.Builder boolQueryBuilder = new BoolQuery.Builder();
 
-			// Properties searchfield 가져오기
-			List<String> propertiesSearchField = PROPERTIES.getSearchField(indexName);
-
 			// 검색어
-			if(QUERY.equals("")) {
+			if(QUERY.isEmpty()) {
 				Builder.getMatchAllQueryBuilder(boolQueryBuilder);
 			}else {
 				List<String> searchField = SEARCHFIELD.get(indexName);
 				
-				if(QUERY.indexOf(StringUtil.WILDCARD) == QUERY.length() - 1) {
-					Builder.getPrefixQueryBuilder(boolQueryBuilder, QUERY, searchField);
-				} else if(QUERY.indexOf(StringUtil.WILDCARD) > -1) {
-					Builder.getWildcardQueryBuilder(boolQueryBuilder, QUERY, searchField);
-				} else {
-					Builder.getQueryBuilder(boolQueryBuilder, QUERY, searchField);
-				}
-			}
-
-			// nested
-			if(NESTEDFIELD.containsKey(indexName)) {
-			List<String> nestedField = NESTEDFIELD.get(indexName);
-				if(nestedField.size() > 0 && !QUERY.equals("")) {
-					Builder.getNestedBuilder(boolQueryBuilder, nestedField, QUERY);
-				}
-			}
-			
-			// 포함 단어
-			if(INCLUDEWORD.containsKey(indexName)) {
-				List<String> includeWord = INCLUDEWORD.get(indexName);
-				if(includeWord.size() > 0) {
-					Builder.getIncludeWordBuilder(includeBuilder, includeWord, propertiesSearchField);
-				}
-			}
-
-			// 제외 단어
-			if(EXCLUDEWORD.containsKey(indexName)) {
-				List<String> excludeWord = EXCLUDEWORD.get(indexName);
-				if(excludeWord.size() > 0) {
-					Builder.getExcludeWordBuilder(boolQueryBuilder, excludeWord, propertiesSearchField);
-				}
+				Builder.getQueryBuilder(boolQueryBuilder, QUERY, searchField);
 			}
 
 			// 날짜
 			if(DATEFIELD.containsKey(indexName)) {
 				List<String> dateField = DATEFIELD.get(indexName);
-				if(dateField.size() > 0) {
+				if(!dateField.isEmpty()) {
 					Builder.getDateBuilder(boolQueryBuilder, dateField);
 				}
 			}
@@ -176,7 +143,7 @@ public class Search {
 			// 필터
 			if(FILTERFIELD.containsKey(indexName)) {
 				List<String> filterField = FILTERFIELD.get(indexName);
-				if(filterField.size() > 0) {
+				if(!filterField.isEmpty()) {
 					Builder.getMustFilterBuilder(boolQueryBuilder, filterField);
 				}
 			}
@@ -184,20 +151,20 @@ public class Search {
 			// should 조건 (category)
 			if(SHOULDFILTERFIELD.containsKey(indexName)) {
 				List<String> shouldFilterField = SHOULDFILTERFIELD.get(indexName);
-				if(shouldFilterField.size() > 0) {
+				if(!shouldFilterField.isEmpty()) {
 					Builder.getShouldFilterBuilder(shouldBuilder, shouldFilterField);
 				}
 			}
 
 			BoolQuery includeQuery = includeBuilder.build();
-			if (includeQuery.should() != null && !includeQuery.should().isEmpty()) {
+			if (!includeQuery.should().isEmpty()) {
 				boolQueryBuilder.must(
 					new Query.Builder().bool(includeQuery).build()
 				);
 			}
 			
 			BoolQuery shouldQuery = shouldBuilder.build();
-			if (shouldQuery.should() != null && !shouldQuery.should().isEmpty()) {
+			if (!shouldQuery.should().isEmpty()) {
 				boolQueryBuilder.must(
 					new Query.Builder().bool(shouldQuery).build()
 				);
@@ -209,21 +176,21 @@ public class Search {
 			
 			if(SORTFIELD.containsKey(indexName)) {
 				List<String> orderFields = SORTFIELD.get(indexName);
-				if(orderFields.size() > 0) {
+				if(!orderFields.isEmpty()) {
 					Builder.getSortBuilder(searchRequestBuilder, orderFields);
 				}
 			}
 
 			if(HIGHLIGHTFIELD.containsKey(indexName)) {
 				List<String> highlightField = HIGHLIGHTFIELD.get(indexName);
-				if(highlightField.size() > 0) {
+				if(!highlightField.isEmpty()) {
 					Builder.getHighlightBuilder(searchRequestBuilder, highlightField);
 				}
 			}
 
 			if(AGGRFIELD.containsKey(indexName)) {
 				List<String> aggrField = AGGRFIELD.get(indexName);
-				if(aggrField.size() > 0) {
+				if(!aggrField.isEmpty()) {
 					Builder.getTermsAggregationBuilder(searchRequestBuilder, aggrField);
 				}
 			}

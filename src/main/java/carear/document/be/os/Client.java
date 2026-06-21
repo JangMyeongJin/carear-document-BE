@@ -2,8 +2,12 @@ package carear.document.be.os;
 
 import org.apache.hc.client5.http.auth.AuthScope;
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
 import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.util.Timeout;
 
 import org.opensearch.client.opensearch.OpenSearchClient;
 import org.opensearch.client.transport.OpenSearchTransport;
@@ -45,9 +49,24 @@ public class Client {
             );
 
             // OpenSearch와 통신하기 위한 OpenSearchTransport 객체를 생성
+            ConnectionConfig connectionConfig = ConnectionConfig.custom()
+                .setConnectTimeout(Timeout.ofMilliseconds(30000))
+                .build();
+
+            RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectionRequestTimeout(Timeout.ofMilliseconds(30000))
+                .setResponseTimeout(Timeout.ofMilliseconds(30000))
+                .build();
+
             OpenSearchTransport transport = ApacheHttpClient5TransportBuilder.builder(httpHost)
                 .setHttpClientConfigCallback(httpClientBuilder ->
-                    httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider))
+                    httpClientBuilder
+                        .setDefaultCredentialsProvider(credentialsProvider)
+                        .setConnectionManager(
+                            PoolingAsyncClientConnectionManagerBuilder.create()
+                                .setDefaultConnectionConfig(connectionConfig)
+                                .build())
+                        .setDefaultRequestConfig(requestConfig))
                 .build();
 
             // OpenSearchClient 생성 및 반환

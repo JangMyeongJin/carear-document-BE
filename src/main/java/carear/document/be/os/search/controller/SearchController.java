@@ -44,22 +44,29 @@ public class SearchController {
 		searchFormDto.setIndex(indexName);
 		searchFormDto.setIndexes(new String[]{indexName});
 
-		if(requestDto.getSearchField().equals("all")) {
-			searchFormDto.setSearchField(Map.of(indexName, PROPERTIES.getSearchField(indexName)));
-		}else {
-			searchFormDto.setSearchField(Map.of(indexName, List.of(requestDto.getSearchField().split(StringUtil.COMMA))));
+		searchFormDto.setSearchField(Map.of(indexName, PROPERTIES.getSearchField(indexName)));
+		searchFormDto.setHighlightField(Map.of(indexName, PROPERTIES.getHighlightField(indexName)));
+
+		// dateField 설정
+		List<String> dateFields = new ArrayList<>();
+		if(!requestDto.getStartDate().isEmpty()) {
+			dateFields.add("startDate" + StringUtil.SLASH + requestDto.getStartDate() + StringUtil.SLASH + "gte");
 		}
 
-		if(!requestDto.getStartDate().equals("")) {
-			searchFormDto.setDateField(Map.of(indexName, List.of("startDate" + StringUtil.SLASH + requestDto.getStartDate() + StringUtil.SLASH + "gte")));
+		if(!requestDto.getEndDate().isEmpty()) {
+			dateFields.add("endDate" + StringUtil.SLASH + requestDto.getEndDate() + StringUtil.SLASH + "lte");
 		}
 
-		if(!requestDto.getEndDate().equals("")) {
-			searchFormDto.setDateField(Map.of(indexName, List.of("endDate" + StringUtil.SLASH + requestDto.getEndDate() + StringUtil.SLASH + "lte")));
+		if(!dateFields.isEmpty()) {
+			searchFormDto.setDateField(Map.of(indexName, dateFields));
 		}
 
-		if(!requestDto.getSort().equals("")) {
+		if(!requestDto.getSort().isEmpty()) {
 			searchFormDto.setSortField(Map.of(indexName, List.of(requestDto.getSort())));
+		}
+
+		if(requestDto.getFilter().equals("Y")) {
+			searchFormDto.setFilterField(Map.of(indexName, List.of("important" + StringUtil.SLASH + requestDto.getFilter())));
 		}
 
 		searchFormDto.setPage(requestDto.getPage());
@@ -115,6 +122,10 @@ public class SearchController {
 
 			if(!requestDto.getAggrField().equals("")) {
 				searchFormDto.setAggrField(Map.of(indexName, List.of("aggrName" + StringUtil.SLASH + requestDto.getAggrField() + StringUtil.SLASH + requestDto.getSize() )));
+			}
+
+			if(requestDto.getFilter().equals("Y")) {
+				searchFormDto.setFilterField(Map.of(indexName, List.of("important" + StringUtil.SLASH + requestDto.getFilter())));
 			}
 			
 			searchFormDto.setPage(requestDto.getPage());

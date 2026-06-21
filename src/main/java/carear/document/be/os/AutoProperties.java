@@ -22,11 +22,11 @@ public class AutoProperties {
 	 *  '/' nested 구분
 	 */
 	private String[] SEARCHFIELD = {
-		"word,word.ngram,word.keyword,word.exact,initial"
+		"word,word.ngram,initial,initial.ngram"
 	};
 
     private String[] HIGHLIGHTFIELD = {
-		"word,word.ngram,word.keyword,word.exact,initial"
+			"word,word.ngram,initial,initial.ngram"
 	};
 
     private String[] DEFAULTSEARCHFIELD = {
