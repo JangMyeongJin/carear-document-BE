@@ -60,21 +60,19 @@ public class QuerySearchService extends SearchService {
 							}
                             List<String> defaultFields = PROPERTIES.getDefaultField(hit.index());
                             Map<String, List<String>> highlight = hit.highlight();
-                            Map<String, List<String>> mergedHighlight = new HashMap<>();
 
                             for(String field : defaultFields) {
                                 if(field.contains(StringUtil.SLASH)) {
                                     field = field.replace(StringUtil.SLASH, ".");
                                 }
                                 if(highlight.containsKey(field + ".ngram")) {
-                                    mergedHighlight.put(field, highlight.get(field + ".ngram"));
+                                    result.put(field, String.join(" | ", highlight.get(field + ".ngram")));
                                 } else if(highlight.containsKey(field)) {
-                                    mergedHighlight.put(field, highlight.get(field));
+                                    result.put(field, String.join(" | ", highlight.get(field)));
                                 } else if(highlight.containsKey(field + ".exact")) {
-                                    mergedHighlight.put(field, highlight.get(field + ".exact"));
+                                    result.put(field, String.join(" | ", highlight.get(field + ".exact")));
                                 }
                             }
-                            result.put("highlight", mergedHighlight);
                             return result;
 						})
 						.collect(Collectors.toList());
@@ -131,20 +129,19 @@ public class QuerySearchService extends SearchService {
 					if (hit.highlight() != null) {
 						List<String> defaultFields = PROPERTIES.getDefaultField(hit.index());
 						Map<String, List<String>> highlight = hit.highlight();
-						Map<String, List<String>> mergedHighlight = new HashMap<>();
+
 							for(String field : defaultFields) {
 							if(field.contains(StringUtil.SLASH)) {
 								field = field.replace(StringUtil.SLASH, ".");
 							}
 							if(highlight.containsKey(field + ".ngram")) {
-								mergedHighlight.put(field, highlight.get(field + ".ngram"));
+								result.put(field, String.join(" | ", highlight.get(field + ".ngram")));
 							} else if(highlight.containsKey(field)) {
-								mergedHighlight.put(field, highlight.get(field));
+								result.put(field, String.join(" | ", highlight.get(field)));
 							} else if(highlight.containsKey(field + ".exact")) {
-								mergedHighlight.put(field, highlight.get(field + ".exact"));
+								result.put(field, String.join(" | ", highlight.get(field + ".exact")));
 							}
 						}
-						result.put("highlight", mergedHighlight);
 					}
 					return result;
 				})

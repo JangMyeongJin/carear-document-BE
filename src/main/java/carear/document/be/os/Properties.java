@@ -14,7 +14,8 @@ import carear.document.be.util.StringUtil;
 @Component
 public class Properties {
 	private final String[] INDEXES = {
-		"project"
+			"project",
+			"query_log"
 	};
 
     /*
@@ -23,23 +24,28 @@ public class Properties {
 	 *  '/' nested 구분
 	 */
 	private final String[] SEARCHFIELD = {
-			"title,title.exact,body,body.exact,stack,features,features.exact,role"
+			"title,title.exact,body,body.exact,stack,features,features.exact,role,description,description.ngram,description.exact",
+			""
 	};
 
     private final String[] KEYWORDSEARCHFIELD = {
-		"title,body"
+			"title,body",
+			""
 	};
 
     private final String[] HIGHLIGHTFIELD = {
-		"title,title.exact,body,body.exact,stack,features,features.exact,role"
+			"title,title.exact,body,body.exact,stack,features,features.exact,role,description",
+			""
 	};
 
     private final String[] DEFAULTSEARCHFIELD = {
-		"title,body,stack,features,role"
+			"title,body,stack,features,role,description",
+			""
 	};
 
 	private final String[] DEFAULTFIELD = {
-		"title,body,startDate,endDate,role,features,stack,important",
+			"title,body,startDate,endDate,role,features,stack,important,description",
+			"timestamp,query,stack,startDate,endDate,important"
 	};
 
     private final Map<String, List<String>> INDEX_SEARCHFIELD = new HashMap<>();

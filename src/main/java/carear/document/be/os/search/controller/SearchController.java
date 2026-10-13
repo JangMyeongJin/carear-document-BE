@@ -17,6 +17,8 @@ import carear.document.be.os.AutoProperties;
 import carear.document.be.os.Properties;
 import carear.document.be.os.search.dto.SearchFormDto;
 import carear.document.be.os.search.dto.SearchRequestDto;
+import carear.document.be.os.data.dto.put.QueryLogRequestDto;
+import carear.document.be.os.data.service.PutDataService;
 import carear.document.be.os.search.service.SearchServiceFactory;
 import carear.document.be.os.search.util.SearchFormUtil;
 import carear.document.be.util.StringUtil;
@@ -29,6 +31,9 @@ public class SearchController {
 	
 	@Autowired
 	private SearchServiceFactory searchServiceFactory;
+
+	@Autowired
+	private PutDataService putDataService;
 
 	@Autowired
 	private Properties PROPERTIES;
@@ -74,7 +79,37 @@ public class SearchController {
 
 		log.info("[QuerySearch] searchFormDto : " + searchFormDto);
 			
-		return ResponseEntity.ok(searchServiceFactory.getSearchService("query").search(searchFormDto, requestDto));
+		var searchResult = searchServiceFactory.getSearchService("query").search(searchFormDto, requestDto);
+
+		if(!requestDto.getQuery().isEmpty()) {
+			// 검색 로그 저장
+			try {
+				String timestamp = java.time.LocalDateTime.now().toString();
+
+				QueryLogRequestDto logDto = new QueryLogRequestDto();
+				logDto.setId(timestamp);
+				logDto.setQuery(requestDto.getQuery());
+				logDto.setImportant(requestDto.getFilter());
+				logDto.setTimestamp(timestamp);
+
+				if(!requestDto.getStartDate().isEmpty()) {
+					logDto.setStartDate(requestDto.getStartDate());
+				}
+
+				if(!requestDto.getEndDate().isEmpty()) {
+					logDto.setEndDate(requestDto.getEndDate());
+				}
+
+				putDataService.putData(logDto, "query_log");
+
+				log.info("[QuerySearch] query_log 저장 성공");
+			} catch (Exception e) {
+				log.warn("query_log 저장 실패", e);
+				// 검색 응답은 그대로 반환
+			}
+		}
+
+		return ResponseEntity.ok(searchResult);
     }
 
 	@PostMapping("/auto")

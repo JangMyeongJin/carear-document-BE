@@ -14,6 +14,8 @@ public class PutRequestDtoFactory {
         try {
             if(indexName.equals("project")) {
                 return objectMapper.convertValue(data, ProjectRequestDto.class);
+            } else if(indexName.equals("query_log")) {
+                return objectMapper.convertValue(data, QueryLogRequestDto.class);
             }else {
                 return objectMapper.convertValue(data, DataRequestDto.class);
             }
